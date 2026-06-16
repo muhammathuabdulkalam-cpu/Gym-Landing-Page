@@ -1,216 +1,401 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { FiArrowRight, FiX, FiLink, FiSmartphone, FiMonitor } from 'react-icons/fi'
+import { FiArrowRight, FiX, FiLink, FiSmartphone, FiMonitor, FiActivity, FiTrendingUp } from 'react-icons/fi'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TranzioDashboard from '../widgets/TranzioDashboard'
 
+/* ─── Floating badge pill that hovers around dashboard ─── */
+function FloatingBadge({ icon, label, value, accent, delay, style }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.7, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={`hidden md:flex absolute z-20 items-center gap-2.5
+                  bg-[#0d0e18]/90 border backdrop-blur-xl
+                  px-3.5 py-2.5 rounded-2xl shadow-2xl
+                  ${accent}`}
+      style={style}
+    >
+      <span className="text-lg">{icon}</span>
+      <div className="leading-none">
+        <p className="text-white font-display font-black text-sm">{value}</p>
+        <p className="text-zinc-500 text-[10px] font-semibold uppercase tracking-wider mt-0.5">{label}</p>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Hero() {
-  const containerRef = useRef(null)
-  const dashboardWrapperRef = useRef(null)
+  const containerRef    = useRef(null)
+  const dashboardRef    = useRef(null)
   const [showModal, setShowModal] = useState(false)
 
+  /* ─── Scroll animations ─── */
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    // Hero content reveal timeline
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-    tl.fromTo('.hero-title-word', 
-      { y: 80, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1, stagger: 0.15 }
-    )
-    tl.fromTo('.hero-sub', 
-      { y: 30, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 0.8 }, 
-      '-=0.6'
-    )
-    tl.fromTo('.hero-ctas', 
-      { y: 30, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 0.8 }, 
-      '-=0.6'
-    )
-    tl.fromTo('.hero-dashboard-container', 
-      { scale: 0.85, opacity: 0, y: 120, rotateX: 15 }, 
-      { scale: 1, opacity: 1, y: 0, rotateX: 0, duration: 1.5, ease: 'power4.out' }, 
-      '-=1'
+    // Dashboard scroll-driven zoom (Apple-style)
+    gsap.fromTo(dashboardRef.current,
+      { scale: 0.8, y: 80 },
+      {
+        scale: 1.04,
+        y:    -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start:   'top top',
+          end:     '50% top',
+          scrub:   1.5,
+        },
+      }
     )
 
-    // Simple natural scroll fade-out
-    const scrollTl = gsap.timeline({
+    // Hero text fade out on scroll
+    gsap.to('.hero-content',{
+      yPercent: -20,
+      opacity:   0,
+      ease:      'none',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      }
+        start:   'top top',
+        end:     '35% top',
+        scrub:   true,
+      },
     })
-    
-    scrollTl.to('.hero-header-content', {
-      yPercent: -30,
-      opacity: 0,
-      ease: 'none',
-    }, 0)
 
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill())
-    }
+    return () => ScrollTrigger.getAll().forEach(t => t.kill())
   }, [])
 
+  /* ─── Animation variants ─── */
+  const container = {
+    hidden: {},
+    show:   { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  }
+  const fadeUp = {
+    hidden: { y: 48, opacity: 0 },
+    show:   { y: 0, opacity: 1, transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] } },
+  }
+
   return (
-    <section 
-      ref={containerRef} 
-      className="relative min-h-[140vh] w-full flex flex-col items-center justify-start pt-32 pb-64 px-6 md:px-12 overflow-x-hidden grid-bg noise-bg"
-      style={{ perspective: 1200 }}
+    <section
+      ref={containerRef}
+      className="relative min-h-[160vh] w-full overflow-hidden"
+      style={{ background: '#030303' }}
     >
-      {/* Background Animated Blobs */}
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px] -z-10 animate-blob-1" />
-      <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] rounded-full bg-purple-500/5 blur-[120px] -z-10 animate-blob-2" />
-      <div className="absolute bottom-10 left-1/3 w-[300px] h-[300px] rounded-full bg-orange-500/5 blur-[90px] -z-10 animate-blob-3" />
+      {/* ═══════════ BACKGROUND LAYERS ═══════════ */}
 
-      {/* Grid overlay styling details */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none -z-10" />
+      {/* Grid */}
+      <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
 
-      {/* Hero Header Content */}
-      <div className="hero-header-content max-w-6xl w-full text-center flex flex-col items-center z-10">
-        <h1 className="text-4xl md:text-7xl font-display font-black tracking-tight leading-none text-white max-w-4xl">
-          <span className="block overflow-hidden h-[80px] md:h-[120px]">
-            <span className="hero-title-word inline-block bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-              Transform Your
-            </span>
+      {/* Large radial gradient — primary purple orb */}
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2
+                      w-[900px] h-[700px] rounded-full
+                      bg-gradient-radial from-purple-600/20 via-purple-900/8 to-transparent
+                      blur-[80px] pointer-events-none" />
+
+      {/* Secondary cyan orb bottom-right */}
+      <div className="absolute top-[40%] right-[-5%]
+                      w-[500px] h-[500px] rounded-full
+                      bg-gradient-radial from-cyan-500/12 via-cyan-900/5 to-transparent
+                      blur-[80px] pointer-events-none animate-blob-2" />
+
+      {/* Diagonal neon beam — top left → center */}
+      <div
+        className="absolute top-0 left-0 w-full h-[2px] pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(168,85,247,0.4) 40%, rgba(0,240,255,0.2) 70%, transparent 100%)',
+          transform: 'rotate(-8deg) translateY(220px)',
+          filter: 'blur(1px)',
+        }}
+      />
+      <div
+        className="absolute top-0 left-0 w-full h-[1px] pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(168,85,247,0.25) 50%, transparent 100%)',
+          transform: 'rotate(-8deg) translateY(240px)',
+        }}
+      />
+
+      {/* Side vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background pointer-events-none" />
+
+      {/* ═══════════ HERO CONTENT ═══════════ */}
+      <div className="hero-content relative z-10 flex flex-col items-center text-center pt-28 md:pt-36 px-5 md:px-12">
+
+        {/* Pill badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: -10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-2 px-4 py-2 rounded-full mb-8
+                     bg-gradient-to-r from-purple-500/10 to-cyan-500/10
+                     border border-purple-500/20 backdrop-blur-sm"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+          <span className="text-[11px] font-extrabold uppercase tracking-[0.25em] text-purple-300">
+            Health Tracking Reimagined
           </span>
-          <span className="block overflow-hidden h-[80px] md:h-[120px] -mt-2 md:-mt-4">
-            <span className="hero-title-word inline-block bg-gradient-to-r from-purple-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
-              Fitness Journey
+        </motion.div>
+
+        {/* Headline */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="max-w-5xl"
+        >
+          <motion.h1
+            variants={fadeUp}
+            className="text-5xl sm:text-6xl md:text-8xl font-display font-black tracking-tight leading-[0.92] text-white mb-4"
+          >
+            <span className="block">Transform</span>
+            <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+              Your Fitness
             </span>
-          </span>
-        </h1>
+            <span className="block">Journey.</span>
+          </motion.h1>
 
-        <p className="hero-sub mt-6 text-sm md:text-lg text-zinc-400/80 max-w-xl font-medium tracking-wide leading-relaxed opacity-0">
-          Track workouts. Monitor calories. Measure progress. <br className="hidden md:inline" />
-          Stay consistent. Achieve goals with Tranzio.
-        </p>
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 text-base md:text-xl text-zinc-400 max-w-xl mx-auto font-medium leading-relaxed"
+          >
+            Track workouts. Monitor calories. Measure progress.{' '}
+            <span className="text-zinc-300">Stay consistent with Tranzio.</span>
+          </motion.p>
 
-        {/* Call to Actions */}
-        <div className="hero-ctas flex flex-col sm:flex-row gap-4 mt-8 opacity-0 z-20">
-          <a 
-            href="https://gym-tracker-14iz.onrender.com" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-8 py-3.5 rounded-full shadow-neon-purple hover:scale-105 active:scale-95 transition-all duration-300 text-sm md:text-base"
+          {/* CTAs */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col sm:flex-row gap-4 mt-10 justify-center items-center"
           >
-            <span>Launch Web App</span>
-            <FiMonitor size={18} />
-          </a>
-          <button 
-            onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold px-8 py-3.5 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-105 active:scale-95 text-sm md:text-base"
+            {/* Web App — window.open guarantees redirect even on Render cold starts */}
+            <button
+              onClick={() => window.open('https://gym-tracker-14iz.onrender.com', '_blank', 'noopener,noreferrer')}
+              className="group relative inline-flex items-center gap-2.5
+                         bg-gradient-to-r from-purple-600 to-indigo-600
+                         text-white font-bold px-8 py-4 rounded-2xl text-sm md:text-base
+                         shadow-neon-purple hover:shadow-[0_0_40px_rgba(168,85,247,0.5)]
+                         hover:scale-105 active:scale-95 transition-all duration-300"
+            >
+              <FiMonitor size={18} />
+              <span>Launch Web App</span>
+              <FiArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center gap-2.5
+                         bg-white/5 border border-white/10 hover:border-white/20
+                         text-white font-semibold px-8 py-4 rounded-2xl text-sm md:text-base
+                         backdrop-blur-sm hover:bg-white/10
+                         transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <FiSmartphone size={18} />
+              <span>Mobile App</span>
+            </button>
+          </motion.div>
+
+          {/* Stat row */}
+          <motion.div
+            variants={fadeUp}
+            className="flex items-center justify-center gap-8 md:gap-14 mt-12
+                       border-t border-white/5 pt-8"
           >
-            <span>Launch Mobile App</span>
-            <FiSmartphone size={18} />
-          </button>
+            {[
+              { val: '4+',   sub: 'Tracking Modules' },
+              { val: '100%', sub: 'On-Device Data'   },
+              { val: '5 ★',  sub: 'Rated by Users'   },
+            ].map((s, i) => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <span className="text-2xl md:text-4xl font-display font-black text-white">{s.val}</span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-bold">{s.sub}</span>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* ═══════════ DASHBOARD CENTERPIECE ═══════════ */}
+      <div className="relative z-10 flex justify-center items-center mt-12 md:mt-16 px-4">
+
+        {/* Glow ring behind dashboard */}
+        <div className="absolute w-[560px] h-[320px] rounded-[40px]
+                        bg-gradient-to-r from-purple-600/25 via-indigo-600/15 to-cyan-600/20
+                        blur-[60px] pointer-events-none" />
+
+        {/* Floating badges — only on md+ */}
+        <FloatingBadge
+          icon="🔥"
+          label="Calories Today"
+          value="1,840 kcal"
+          accent="border-orange-500/20"
+          delay={0.8}
+          style={{ top: '8%', left: '-2%' }}
+        />
+        <FloatingBadge
+          icon="👟"
+          label="Steps Today"
+          value="8,432"
+          accent="border-cyan-500/20"
+          delay={1.0}
+          style={{ top: '8%', right: '-2%' }}
+        />
+        <FloatingBadge
+          icon="💪"
+          label="Workouts Done"
+          value="3 Sets"
+          accent="border-purple-500/20"
+          delay={1.2}
+          style={{ bottom: '12%', left: '0%' }}
+        />
+        <FloatingBadge
+          icon="⚖️"
+          label="Current Weight"
+          value="76.8 kg"
+          accent="border-emerald-500/20"
+          delay={1.4}
+          style={{ bottom: '12%', right: '0%' }}
+        />
+
+        {/* Dashboard card */}
+        <div
+          ref={dashboardRef}
+          className="w-full max-w-3xl md:max-w-4xl relative"
+          style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+        >
+          {/* Subtle rainbow border glow */}
+          <div className="absolute -inset-[1px] rounded-[28px] bg-gradient-to-r
+                          from-purple-500/40 via-pink-500/20 to-cyan-500/40
+                          blur-[2px] -z-10" />
+
+          <TranzioDashboard />
         </div>
       </div>
 
-      {/* Combined Mobile App Dashboard Mockup (Centerpiece with scrolling 3D Zoom Parallax) */}
-      <div 
-        ref={dashboardWrapperRef}
-        className="hero-dashboard-container w-full max-w-4xl mt-20 z-10 relative flex justify-center items-center"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <TranzioDashboard />
-      </div>
-
-      {/* App & Web Launch Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowModal(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            />
-
-            {/* Modal Body */}
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 30 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 30 }}
-              className="relative w-full max-w-lg bg-[#151622] border border-white/10 p-8 rounded-3xl shadow-glass overflow-hidden"
-            >
-              {/* Close Button */}
-              <button 
+      {/* ═══════════ MODAL ═══════════ */}
+      {showModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => setShowModal(false)}
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+          />
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            className="relative w-full max-w-lg bg-[#0e0f1c] border border-white/10
+                       rounded-3xl shadow-2xl overflow-hidden"
+          >
+            {/* Modal top bar */}
+            <div className="flex items-center justify-between px-6 pt-6 pb-0">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500
+                                flex items-center justify-center">
+                  <span className="font-display font-black text-white text-xs">T</span>
+                </div>
+                <span className="font-display font-bold text-white text-sm tracking-wide">
+                  TRANZIO<span className="text-purple-400">FIT</span>
+                </span>
+              </div>
+              <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors"
+                className="p-2 text-zinc-500 hover:text-white transition-colors rounded-lg hover:bg-white/5"
               >
-                <FiX size={20} />
+                <FiX size={18} />
               </button>
+            </div>
 
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 shadow-neon-purple">
-                  <FiSmartphone size={22} />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold font-display text-white">Launch Mobile App</h3>
-                <p className="text-xs text-zinc-400 mt-2 font-medium">
-                  Follow these instructions to run the Expo Go mobile client locally on your device or simulator.
-                </p>
+            <div className="px-6 pb-6 pt-5 flex flex-col gap-4">
 
-                {/* Instructions */}
-                <div className="w-full text-left bg-black/40 border border-white/5 p-5 rounded-2xl gap-4 flex flex-col mt-6">
-                  <div className="flex gap-3 items-start">
-                    <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
-                    <p className="text-xs text-zinc-300 font-semibold">
-                      Make sure your terminal is running <code className="bg-white/5 border border-white/10 px-1 py-0.5 rounded text-[10px] text-purple-300">npx expo start</code> in the <code className="bg-white/5 border border-white/10 px-1 py-0.5 rounded text-[10px] text-purple-300">GYM-APP</code> folder.
+              {/* ── Web App CTA ── */}
+              <div className="rounded-2xl bg-gradient-to-br from-purple-600/10 to-indigo-600/5
+                              border border-purple-500/20 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <FiMonitor size={14} className="text-purple-400" />
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-purple-400">Web App</span>
+                    </div>
+                    <h4 className="text-base font-display font-black text-white leading-tight">Open in Browser</h4>
+                    <p className="text-zinc-400 text-xs mt-1 leading-relaxed">
+                      Full-featured web version — works on any device with a browser.
                     </p>
+                    <p className="text-zinc-600 text-[10px] mt-2 font-mono">gym-tracker-14iz.onrender.com</p>
                   </div>
-
-                  <div className="flex gap-3 items-start">
-                    <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-                    <p className="text-xs text-zinc-300 font-semibold">
-                      Install the <strong className="text-white">Expo Go</strong> app from the Google Play Store or iOS App Store on your physical phone.
-                    </p>
-                  </div>
-
-                  <div className="flex gap-3 items-start">
-                    <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
-                    <p className="text-xs text-zinc-300 font-semibold flex-grow">
-                      Scan the terminal's QR code using the Expo Go client, or open the link below directly from your mobile browser:
-                    </p>
-                  </div>
-
-                  <a 
-                    href="exp://127.0.0.1:8081"
-                    className="flex items-center justify-center gap-2 bg-purple-600/10 hover:bg-purple-600/20 border border-purple-600/30 text-purple-400 font-bold py-2 px-4 rounded-xl text-xs transition-colors mt-2"
+                  <button
+                    onClick={() => {
+                      window.open('https://gym-tracker-14iz.onrender.com', '_blank', 'noopener,noreferrer')
+                      setShowModal(false)
+                    }}
+                    className="flex-shrink-0 flex items-center gap-1.5
+                               bg-gradient-to-r from-purple-600 to-indigo-600
+                               text-white font-bold px-4 py-2.5 rounded-xl text-xs
+                               shadow-neon-purple hover:scale-105 active:scale-95
+                               transition-all duration-200 whitespace-nowrap mt-1"
                   >
-                    <FiLink /> exp://127.0.0.1:8081
-                  </a>
-                </div>
-
-                {/* Footer buttons */}
-                <div className="flex gap-3 w-full mt-6">
-                  <a 
-                    href="https://gym-tracker-14iz.onrender.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-grow flex items-center justify-center gap-2 bg-white text-black font-bold py-3 rounded-xl text-xs transition-colors"
-                  >
-                    Open Web App <FiArrowRight />
-                  </a>
-                  <button 
-                    onClick={() => setShowModal(false)}
-                    className="flex-grow bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold py-3 rounded-xl text-xs transition-colors"
-                  >
-                    Close Setup
+                    Open Now <FiArrowRight size={12} />
                   </button>
                 </div>
-
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
+              {/* ── Mobile App CTA ── */}
+              <div className="rounded-2xl bg-white/[0.03] border border-white/8 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <FiSmartphone size={14} className="text-cyan-400" />
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-cyan-400">Mobile App</span>
+                </div>
+                <h4 className="text-base font-display font-black text-white leading-tight mb-1">
+                  Install on Your Phone
+                </h4>
+                <p className="text-zinc-400 text-xs leading-relaxed mb-4">
+                  Scan the QR code from Expo Go, or run the app locally using the steps below.
+                </p>
+
+                {/* Install steps */}
+                <div className="flex flex-col gap-3">
+                  {[
+                    { step: '1', text: <> Install <strong className="text-white">Expo Go</strong> from the App Store or Google Play on your phone. </> },
+                    { step: '2', text: <> Make sure <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">npx expo start</code> is running in the <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">GYM-APP</code> folder. </> },
+                    { step: '3', text: 'Scan the QR code in your terminal, or tap the link below from your phone:' },
+                  ].map(({ step, text }) => (
+                    <div key={step} className="flex gap-2.5 items-start">
+                      <span className="w-5 h-5 rounded-full bg-cyan-500/15 text-cyan-400 text-[10px] font-black
+                                       flex items-center justify-center flex-shrink-0 mt-0.5">{step}</span>
+                      <p className="text-xs text-zinc-300 font-medium flex-grow leading-relaxed">{text}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Expo link pill */}
+                <a
+                  href="exp://127.0.0.1:8081"
+                  className="mt-4 flex items-center justify-center gap-2
+                             bg-cyan-500/8 hover:bg-cyan-500/15 border border-cyan-500/25
+                             text-cyan-300 font-bold py-2.5 px-4 rounded-xl text-xs
+                             transition-all duration-200 font-mono"
+                >
+                  <FiLink size={12} /> exp://127.0.0.1:8081
+                </a>
+              </div>
+
+              {/* ── Dismiss ── */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full bg-white/4 hover:bg-white/8 border border-white/8
+                           text-zinc-400 hover:text-white font-semibold py-3 rounded-xl text-xs
+                           transition-all duration-200"
+              >
+                Close
+              </button>
+
+            </div>
+          </motion.div>
+        </div>
+      )}
     </section>
   )
 }
+
