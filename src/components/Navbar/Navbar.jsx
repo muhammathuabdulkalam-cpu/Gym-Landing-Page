@@ -23,8 +23,8 @@ export default function Navbar() {
                    bg-background/75 backdrop-blur-xl border-b border-white/[0.06]"
       >
         {/* Logo */}
-        <Link to="/" className="group flex items-center gap-0.5 transition-transform duration-300 hover:scale-102 active:scale-98 shrink-0">
-          <span className="font-display font-black italic text-base md:text-lg tracking-tighter bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(168,85,247,0.45)]">
+        <Link to="/" className="group flex items-center gap-0.5 transition-transform duration-300 hover:scale-102 active:scale-98 shrink-0 drop-shadow-[0_0_10px_rgba(168,85,247,0.45)]">
+          <span className="font-display font-black italic text-base md:text-lg tracking-tighter bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent pr-1">
             Tranzio
           </span>
           <span className="text-cyan-400 font-black text-base md:text-lg drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] select-none">
