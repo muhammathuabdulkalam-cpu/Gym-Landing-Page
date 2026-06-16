@@ -107,7 +107,9 @@ export default function Download() {
         {/* Store CTAs */}
         <div className="dl-btns flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
           <a
-            href="#app-store"
+            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+            target="_blank"
+            rel="noopener noreferrer"
             className="dl-btn flex items-center justify-center gap-3
                        bg-white text-black font-bold px-8 py-4 rounded-2xl
                        hover:bg-zinc-100 transition-all duration-300
@@ -116,13 +118,15 @@ export default function Download() {
           >
             <FaApple size={22} />
             <div className="text-left leading-none">
-              <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Download on the</span>
-              <span className="text-sm font-black font-display mt-0.5 block">App Store</span>
+              <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Download for iOS</span>
+              <span className="text-sm font-black font-display mt-0.5 block">EAS Build</span>
             </div>
           </a>
 
           <a
-            href="#google-play"
+            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+            target="_blank"
+            rel="noopener noreferrer"
             className="dl-btn flex items-center justify-center gap-3
                        bg-white/5 border border-purple-500/30 text-white font-bold px-8 py-4 rounded-2xl
                        hover:bg-white/10 transition-all duration-300
@@ -131,8 +135,8 @@ export default function Download() {
           >
             <FaGooglePlay className="text-primary" size={20} />
             <div className="text-left leading-none">
-              <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Get it on</span>
-              <span className="text-sm font-black font-display mt-0.5 block">Google Play</span>
+              <span className="text-[10px] uppercase font-semibold text-zinc-500 block">Download for Android</span>
+              <span className="text-sm font-black font-display mt-0.5 block">EAS Build</span>
             </div>
           </a>
         </div>

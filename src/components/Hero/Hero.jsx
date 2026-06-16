@@ -348,37 +348,47 @@ export default function Hero() {
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-cyan-400">Mobile App</span>
                 </div>
                 <h4 className="text-base font-display font-black text-white leading-tight mb-1">
-                  Install on Your Phone
+                  Install Standalone App
                 </h4>
                 <p className="text-zinc-400 text-xs leading-relaxed mb-4">
-                  Scan the QR code from Expo Go, or run the app locally using the steps below.
+                  Download and install the latest standalone mobile build directly from Expo EAS (iOS & Android).
                 </p>
 
-                {/* Install steps */}
-                <div className="flex flex-col gap-3">
+                {/* Direct download button */}
+                <a
+                  href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2
+                             bg-gradient-to-r from-cyan-500 to-blue-600
+                             text-white font-bold py-3 px-4 rounded-xl text-xs md:text-sm
+                             shadow-neon-cyan hover:scale-[1.02] active:scale-[0.98]
+                             transition-all duration-200"
+                >
+                  <FiSmartphone size={14} /> Download EAS Mobile Build
+                </a>
+
+                {/* Divider */}
+                <div className="flex items-center gap-2 my-4">
+                  <div className="h-[1px] bg-white/5 flex-grow" />
+                  <span className="text-[9px] font-extrabold text-zinc-500 uppercase tracking-widest">or developer testing</span>
+                  <div className="h-[1px] bg-white/5 flex-grow" />
+                </div>
+
+                {/* Expo Go steps */}
+                <div className="flex flex-col gap-2.5">
+                  <p className="text-[10px] font-bold text-zinc-400">Run via Local Development Server:</p>
                   {[
-                    { step: '1', text: <> Install <strong className="text-white">Expo Go</strong> from the App Store or Google Play on your phone. </> },
-                    { step: '2', text: <> Make sure <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">npx expo start</code> is running in the <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">GYM-APP</code> folder. </> },
-                    { step: '3', text: 'Scan the QR code in your terminal, or tap the link below from your phone:' },
+                    { step: '1', text: <> Install <strong className="text-white">Expo Go</strong> from the App Store or Google Play. </> },
+                    { step: '2', text: <> Make sure <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">npx expo start</code> is running in <code className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-[10px] text-purple-300">GYM-APP</code>. </> },
                   ].map(({ step, text }) => (
                     <div key={step} className="flex gap-2.5 items-start">
-                      <span className="w-5 h-5 rounded-full bg-cyan-500/15 text-cyan-400 text-[10px] font-black
+                      <span className="w-4 h-4 rounded-full bg-cyan-500/10 text-cyan-400 text-[9px] font-black
                                        flex items-center justify-center flex-shrink-0 mt-0.5">{step}</span>
-                      <p className="text-xs text-zinc-300 font-medium flex-grow leading-relaxed">{text}</p>
+                      <p className="text-[11px] text-zinc-300 font-medium flex-grow leading-relaxed">{text}</p>
                     </div>
                   ))}
                 </div>
-
-                {/* Expo link pill */}
-                <a
-                  href="exp://127.0.0.1:8081"
-                  className="mt-4 flex items-center justify-center gap-2
-                             bg-cyan-500/8 hover:bg-cyan-500/15 border border-cyan-500/25
-                             text-cyan-300 font-bold py-2.5 px-4 rounded-xl text-xs
-                             transition-all duration-200 font-mono"
-                >
-                  <FiLink size={12} /> exp://127.0.0.1:8081
-                </a>
               </div>
 
               {/* ── Dismiss ── */}
