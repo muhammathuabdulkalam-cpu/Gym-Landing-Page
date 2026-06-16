@@ -11,8 +11,8 @@ export default function Footer() {
         {/* Branding & Description */}
         <div className="max-w-xs flex flex-col gap-4">
           <Link to="/" className="group w-max">
-            <span className="font-display font-black italic text-lg tracking-[0.18em] text-white">
-              TRANZIO<span className="text-purple-400">FIT</span>
+            <span className="font-display font-black italic text-lg tracking-tighter text-white">
+              Tranzio
             </span>
           </Link>
           <p className="text-xs text-zinc-500 font-medium leading-relaxed">
@@ -45,7 +45,7 @@ export default function Footer() {
             <a href="#github" className="w-9 h-9 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/10 transition-all"><FiGithub size={16} /></a>
           </div>
           <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest mt-1">
-            © {currentYear} TranzioFit. All Rights Reserved.
+            © {currentYear} Tranzio. All Rights Reserved.
           </span>
         </div>
 

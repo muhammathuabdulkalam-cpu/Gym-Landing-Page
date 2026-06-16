@@ -292,8 +292,8 @@ export default function Hero() {
             {/* Modal top bar */}
             <div className="flex items-center justify-between px-6 pt-6 pb-0">
               <div className="flex items-center gap-2">
-                <span className="font-display font-black italic text-sm tracking-[0.18em] text-white">
-                  TRANZIO<span className="text-purple-400">FIT</span>
+                <span className="font-display font-black italic text-sm tracking-tighter text-white">
+                  Tranzio
                 </span>
               </div>
               <button

@@ -24,8 +24,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link to="/" className="group shrink-0">
-          <span className="font-display font-black italic text-base md:text-lg tracking-[0.18em] text-white">
-            TRANZIO<span className="text-purple-400">FIT</span>
+          <span className="font-display font-black italic text-base md:text-lg tracking-tighter text-white">
+            Tranzio
           </span>
         </Link>
 
