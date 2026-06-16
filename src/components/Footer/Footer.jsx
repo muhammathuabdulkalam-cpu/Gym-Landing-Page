@@ -10,9 +10,12 @@ export default function Footer() {
         
         {/* Branding & Description */}
         <div className="max-w-xs flex flex-col gap-4">
-          <Link to="/" className="group w-max">
-            <span className="font-display font-black italic text-lg tracking-tighter text-white">
+          <Link to="/" className="group flex items-center gap-0.5 transition-transform duration-300 hover:scale-102 active:scale-98 w-max">
+            <span className="font-display font-black italic text-lg tracking-tighter bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(168,85,247,0.45)]">
               Tranzio
+            </span>
+            <span className="text-cyan-400 font-black text-lg drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] select-none">
+              .
             </span>
           </Link>
           <p className="text-xs text-zinc-500 font-medium leading-relaxed">

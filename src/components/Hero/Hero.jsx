@@ -291,9 +291,12 @@ export default function Hero() {
           >
             {/* Modal top bar */}
             <div className="flex items-center justify-between px-6 pt-6 pb-0">
-              <div className="flex items-center gap-2">
-                <span className="font-display font-black italic text-sm tracking-tighter text-white">
+              <div className="flex items-center gap-0.5">
+                <span className="font-display font-black italic text-sm tracking-tighter bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(168,85,247,0.45)]">
                   Tranzio
+                </span>
+                <span className="text-cyan-400 font-black text-sm drop-shadow-[0_0_6px_rgba(0,240,255,0.8)] select-none">
+                  .
                 </span>
               </div>
               <button
