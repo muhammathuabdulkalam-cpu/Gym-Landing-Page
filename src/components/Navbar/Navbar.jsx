@@ -23,14 +23,8 @@ export default function Navbar() {
                    bg-background/75 backdrop-blur-xl border-b border-white/[0.06]"
       >
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group shrink-0">
-          <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg
-                          bg-gradient-to-tr from-purple-500 to-indigo-500
-                          flex items-center justify-center shadow-neon-purple
-                          group-hover:scale-105 transition-transform">
-            <span className="font-display font-extrabold text-white text-xs">T</span>
-          </div>
-          <span className="font-display font-bold text-sm md:text-base tracking-wider text-white">
+        <Link to="/" className="group shrink-0">
+          <span className="font-display font-black italic text-base md:text-lg tracking-[0.18em] text-white">
             TRANZIO<span className="text-purple-400">FIT</span>
           </span>
         </Link>

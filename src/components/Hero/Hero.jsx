@@ -292,11 +292,7 @@ export default function Hero() {
             {/* Modal top bar */}
             <div className="flex items-center justify-between px-6 pt-6 pb-0">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500
-                                flex items-center justify-center">
-                  <span className="font-display font-black text-white text-xs">T</span>
-                </div>
-                <span className="font-display font-bold text-white text-sm tracking-wide">
+                <span className="font-display font-black italic text-sm tracking-[0.18em] text-white">
                   TRANZIO<span className="text-purple-400">FIT</span>
                 </span>
               </div>

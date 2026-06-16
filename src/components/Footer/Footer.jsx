@@ -10,11 +10,8 @@ export default function Footer() {
         
         {/* Branding & Description */}
         <div className="max-w-xs flex flex-col gap-4">
-          <Link to="/" className="flex items-center gap-2 group w-max">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center shadow-neon-cyan">
-              <span className="font-display font-extrabold text-white text-sm">T</span>
-            </div>
-            <span className="font-display font-bold text-lg tracking-wider text-white">
+          <Link to="/" className="group w-max">
+            <span className="font-display font-black italic text-lg tracking-[0.18em] text-white">
               TRANZIO<span className="text-purple-400">FIT</span>
             </span>
           </Link>
