@@ -49,6 +49,15 @@ export default function Features() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
+    // Ignore mobile address bar resize events to prevent jumpy layout shifts
+    ScrollTrigger.config({ ignoreMobileResize: true })
+
+    // Normalize touch scroll on mobile to resolve touch momentum and lagging scrub behaviors
+    const isMobileDevice = window.innerWidth < 768
+    if (isMobileDevice) {
+      ScrollTrigger.normalizeScroll(true)
+    }
+
     const leftSlides = gsap.utils.toArray('.feature-left-slide')
     gsap.set(leftSlides.slice(1), { opacity: 0, y: 30, display: 'none' })
 
@@ -90,11 +99,12 @@ export default function Features() {
       /* ── Main pinned timeline ── */
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: containerRef.current,
-          start:   'top top',
-          end:     '+=500%',
-          pin:     true,
-          scrub:   1,
+          trigger:       containerRef.current,
+          start:         'top top',
+          end:           '+=500%',
+          pin:           true,
+          scrub:         isMobile ? 0.35 : 1, // highly responsive scrub on mobile touch, smooth lag on desktop
+          anticipatePin: 1, // reduces pin jittering on mobile
         },
       })
 
@@ -158,7 +168,10 @@ export default function Features() {
         .to({}, { duration: 0.5 })
     })
 
-    return () => mm.revert()
+    return () => {
+      mm.revert()
+      ScrollTrigger.normalizeScroll(false)
+    }
   }, [])
 
   /* ─────────────── RENDER ─────────────── */
@@ -254,7 +267,7 @@ export default function Features() {
             {/* Card 0 — Calories (Top-Left) */}
             <div
               className="feat-card-0 absolute top-0 left-0 w-[250px] h-[250px] p-2"
-              style={{ transformStyle: 'preserve-3d', zIndex: 20 }}
+              style={{ transformStyle: 'preserve-3d', zIndex: 20, willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
             >
               <div className="w-full h-full rounded-2xl overflow-hidden">
                 <CalorieWidget />
@@ -264,7 +277,7 @@ export default function Features() {
             {/* Card 1 — Pedometer (Top-Right) */}
             <div
               className="feat-card-1 absolute top-0 right-0 w-[250px] h-[250px] p-2"
-              style={{ transformStyle: 'preserve-3d', zIndex: 20 }}
+              style={{ transformStyle: 'preserve-3d', zIndex: 20, willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
             >
               <div className="w-full h-full rounded-2xl overflow-hidden">
                 <PedometerWidget />
@@ -274,7 +287,7 @@ export default function Features() {
             {/* Card 2 — Weight (Bottom-Left) */}
             <div
               className="feat-card-2 absolute bottom-0 left-0 w-[250px] h-[250px] p-2"
-              style={{ transformStyle: 'preserve-3d', zIndex: 20 }}
+              style={{ transformStyle: 'preserve-3d', zIndex: 20, willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
             >
               <div className="w-full h-full rounded-2xl overflow-hidden">
                 <WeightChartWidget />
@@ -284,7 +297,7 @@ export default function Features() {
             {/* Card 3 — Workout (Bottom-Right) */}
             <div
               className="feat-card-3 absolute bottom-0 right-0 w-[250px] h-[250px] p-2"
-              style={{ transformStyle: 'preserve-3d', zIndex: 20 }}
+              style={{ transformStyle: 'preserve-3d', zIndex: 20, willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
             >
               <div className="w-full h-full rounded-2xl overflow-hidden">
                 <WorkoutSetsWidget />
