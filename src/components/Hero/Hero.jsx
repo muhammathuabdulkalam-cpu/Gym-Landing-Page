@@ -355,7 +355,7 @@ export default function Hero() {
 
                 {/* Direct download button */}
                 <a
-                  href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+                  href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/ffadc944-1814-420d-8a3b-1ca49cca8179"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2

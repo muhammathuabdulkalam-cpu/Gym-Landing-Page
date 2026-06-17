@@ -107,7 +107,7 @@ export default function Download() {
         {/* Store CTAs */}
         <div className="dl-btns flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
           <a
-            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/ffadc944-1814-420d-8a3b-1ca49cca8179"
             target="_blank"
             rel="noopener noreferrer"
             className="dl-btn flex items-center justify-center gap-3
@@ -124,7 +124,7 @@ export default function Download() {
           </a>
 
           <a
-            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/0d03a59d-05d0-4acb-9e73-fa80163eb251"
+            href="https://expo.dev/accounts/muhammathuabdulkalam/projects/GYM-APP/builds/ffadc944-1814-420d-8a3b-1ca49cca8179"
             target="_blank"
             rel="noopener noreferrer"
             className="dl-btn flex items-center justify-center gap-3
